@@ -1,8 +1,11 @@
 import React from 'react'
+import Navbar from './components/navbar/Navbar'
 
 function App() {
   return (
-    <div>ChatApp Socketio</div>
+    <React.Fragment>
+      <Navbar />
+    </React.Fragment>
   )
 }
 
