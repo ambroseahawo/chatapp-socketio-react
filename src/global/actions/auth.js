@@ -4,8 +4,8 @@ import { REGISTER_USER } from "../constants/actionTypes"
 export const registerNewUser = (userData) => async (dispatch) => {
   try {
     await api.registerNewUser(userData).catch((error) => {
-      console.log(error.response.data)
-      dispatch({ type: REGISTER_USER, errors: error.response.data })
+      console.log(error.response)
+      dispatch({ type: REGISTER_USER, errorResponse: error.response })
     })
   } catch (error) {
     console.log(error.message);
