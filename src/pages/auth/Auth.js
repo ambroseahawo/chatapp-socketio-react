@@ -32,6 +32,34 @@ const Auth = () => {
     setUsernameError(false)
     setPasswordError(false)
     setLoginError(false)
+
+    // validate username length
+    if(isNaN(username)){
+      if(!(username.length >= 3 && username.length <= 10)){
+        setUsernameError(true)
+        setErrorMessage("Username should be between 3 to 10 characters")
+        return
+      }
+    }else{
+      setUsernameError(true)
+      setErrorMessage("Username Should be a string")
+      return
+    }
+
+    // validate password length
+    if(password.length < 8){
+      setPasswordError(true)
+      setErrorMessage("Password should be at least 8 characters")
+      return
+    }
+
+    // validate password match
+    if(password !== confirmPassword){
+      setPasswordError(true)
+      setErrorMessage("Passwords did not match")
+      return
+    }
+
 		console.log({ email: email, username: username, password: password, confirmPassword: confirmPassword })
 
     const userData = {
