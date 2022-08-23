@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
+import { useDispatch } from "react-redux"
+import { registerNewUser } from '../../global/actions/auth';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useStyles from './styles'
 import Input from "../../components/input/Input"
 
 const Auth = () => {
+  const dispatch = useDispatch()
+
   const classes = useStyles()
+
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -28,6 +33,14 @@ const Auth = () => {
     setPasswordError(false)
     setLoginError(false)
 		console.log({ email: email, username: username, password: password, confirmPassword: confirmPassword })
+
+    const userData = {
+      email: email,
+      username: username,
+      password: password
+    }
+
+    dispatch(registerNewUser(userData))
   }
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup)

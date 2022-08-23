@@ -12,6 +12,6 @@ export const registerNewUser = (userData) => async (dispatch) => {
     }
     )
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 }
