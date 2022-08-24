@@ -1,5 +1,5 @@
 import * as api from "../../utils/api/APIService"
-import { REGISTER_USER } from "../constants/actionTypes"
+import { LOGIN_USER, REGISTER_USER } from "../constants/actionTypes"
 
 export const registerNewUser = (userData) => async (dispatch) => {
   try {
@@ -9,5 +9,19 @@ export const registerNewUser = (userData) => async (dispatch) => {
     })
   } catch (error) {
     console.log(error.message);
+  }
+}
+
+export const loginExistingUser = (userData) => async(dispatch) =>{
+  try{
+    await api.loginExistingUser(userData).then((data) =>{
+      console.log("Login data: ", data)
+      dispatch({ type: LOGIN_USER, authData: data, errorResponse: null})
+    }).catch((error) => {
+      console.log(error);
+      dispatch({ type: REGISTER_USER, errorResponse: error.response })
+    })
+  }catch(error){
+    console.log(error.message)
   }
 }
