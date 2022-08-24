@@ -19,7 +19,7 @@ export const loginExistingUser = (userData) => async(dispatch) =>{
       dispatch({ type: LOGIN_USER, authData: data, errorResponse: null})
     }).catch((error) => {
       console.log(error);
-      dispatch({ type: REGISTER_USER, errorResponse: error.response })
+      dispatch({ type: LOGIN_USER, errorResponse: error.response })
     })
   }catch(error){
     console.log(error.message)
