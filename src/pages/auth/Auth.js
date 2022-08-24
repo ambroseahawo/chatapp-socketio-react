@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useDispatch } from "react-redux"
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from "react-redux"
 import { registerNewUser } from '../../global/actions/auth';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -22,8 +22,17 @@ const Auth = () => {
   const [usernameError, setUsernameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
 
-  const [loginError, setLoginError] = useState(false)
+  const [authError, setAuthError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+
+  const authState = useSelector((state) => state.authReducer)
+
+  useEffect(() =>{
+    if (authState?.errorResponse) {
+      setAuthError(true)
+      setErrorMessage(authState.errorResponse.data)
+    }
+  }, [authState.errorResponse])
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
@@ -31,7 +40,7 @@ const Auth = () => {
     e.preventDefault();
     setUsernameError(false)
     setPasswordError(false)
-    setLoginError(false)
+    setAuthError(false)
 
     // validate username length
     if(isNaN(username)){
@@ -69,6 +78,8 @@ const Auth = () => {
     }
 
     dispatch(registerNewUser(userData))
+
+    //To do handle login error response
   }
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup)
@@ -78,7 +89,7 @@ const Auth = () => {
     setConfirmPassword('')
     setUsernameError(false)
     setPasswordError(false)
-    setLoginError(false)
+    setAuthError(false)
   }
 
   return (
@@ -88,8 +99,8 @@ const Auth = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography variant='h5'>{isSignup ? "Sign Up" : "Sign In"}</Typography>
-        {loginError && (
-          <Typography variant='body2' color="error">{!isSignup && errorMessage}</Typography>
+        {authError && (
+          <Typography variant='body2' color="error">{errorMessage}</Typography>
         )}
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
