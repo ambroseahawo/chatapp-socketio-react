@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { registerNewUser } from '../../global/actions/auth';
+import { loginExistingUser, registerNewUser } from '../../global/actions/auth';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import useStyles from './styles'
@@ -78,6 +78,14 @@ const Auth = () => {
       }
   
       dispatch(registerNewUser(userData))
+    }else{
+      console.log({ username: username, password: password });
+      const userData = {
+        email: username,
+        password: password
+      }
+
+      dispatch(loginExistingUser(userData))
     }
 
 
