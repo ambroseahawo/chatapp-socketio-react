@@ -14,9 +14,9 @@ export const registerNewUser = (userData) => async (dispatch) => {
 
 export const loginExistingUser = (userData) => async(dispatch) =>{
   try{
-    await api.loginExistingUser(userData).then((data) =>{
-      console.log("Login data: ", data)
-      dispatch({ type: LOGIN_USER, authData: data, errorResponse: null})
+    await api.loginExistingUser(userData).then((resp) =>{
+      console.log("Login data: ", resp.data)
+      dispatch({ type: LOGIN_USER, payload: resp.data, errorResponse: null})
     }).catch((error) => {
       console.log(error);
       dispatch({ type: LOGIN_USER, errorResponse: error.response })

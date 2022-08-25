@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { useCookies } from "react-cookie"
 import { loginExistingUser, registerNewUser } from '../../global/actions/auth';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -8,6 +10,7 @@ import Input from "../../components/input/Input"
 
 const Auth = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const classes = useStyles()
 
@@ -24,64 +27,72 @@ const Auth = () => {
 
   const [authError, setAuthError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-
+  
   const authState = useSelector((state) => state.authReducer)
+  const [cookies, setCookie] = useCookies(["authenticatedUser"])
 
-  useEffect(() =>{
+  useEffect(() => {
     if (authState?.errorResponse) {
       setAuthError(true)
       setErrorMessage(authState.errorResponse.data)
+    }else{
+      if(!isSignup){
+        setCookie("authenticatedUser", authState.authData)
+        if(cookies.authenticatedUser?.username){
+          navigate("/messenger")
+        }
+      }
     }
-  }, [authState.errorResponse])
+  }, [authState, cookies.authenticatedUser?.username, isSignup, navigate, setCookie])
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault();
     setUsernameError(false)
     setPasswordError(false)
     setAuthError(false)
 
-    if(isSignup){
+    if (isSignup) {
       // validate username length
-      if(isNaN(username)){
-        if(!(username.length >= 3 && username.length <= 10)){
+      if (isNaN(username)) {
+        if (!(username.length >= 3 && username.length <= 10)) {
           setUsernameError(true)
           setErrorMessage("Username should be between 3 to 10 characters")
           return
         }
-      }else{
+      } else {
         setUsernameError(true)
         setErrorMessage("Username Should be a string")
         return
       }
-  
+
       // validate password length
-      if(password.length < 8){
+      if (password.length < 8) {
         setPasswordError(true)
         setErrorMessage("Password should be at least 8 characters")
         return
       }
-  
+
       // validate password match
-      if(password !== confirmPassword){
+      if (password !== confirmPassword) {
         setPasswordError(true)
         setErrorMessage("Passwords did not match")
         return
       }
       console.log({ email: email, username: username, password: password, confirmPassword: confirmPassword })
-  
+
       const userData = {
         email: email,
         username: username,
         password: password
       }
-  
+
       dispatch(registerNewUser(userData))
-    }else{
+    } else {
       console.log({ username: username, password: password });
       const userData = {
-        email: username,
+        username: username,
         password: password
       }
 
@@ -89,7 +100,8 @@ const Auth = () => {
     }
 
 
-    //To do handle login error response
+    //To do, enable login with either email or username
+    //To do, handle auth data after login
   }
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup)
@@ -100,6 +112,7 @@ const Auth = () => {
     setUsernameError(false)
     setPasswordError(false)
     setAuthError(false)
+    setErrorMessage("")
   }
 
   return (
