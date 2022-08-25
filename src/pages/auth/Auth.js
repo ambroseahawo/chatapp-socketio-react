@@ -39,6 +39,7 @@ const Auth = () => {
       if(!isSignup){
         setCookie("authenticatedUser", authState.authData)
         if(cookies.authenticatedUser?.username){
+          console.log(cookies.authenticatedUser?.username)
           navigate("/messenger")
         }
       }
@@ -88,7 +89,7 @@ const Auth = () => {
         password: password
       }
 
-      dispatch(registerNewUser(userData))
+      dispatch(registerNewUser(userData, setIsSignup, setPassword))
     } else {
       console.log({ username: username, password: password });
       const userData = {

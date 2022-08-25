@@ -1,9 +1,12 @@
 import * as api from "../../utils/api/APIService"
 import { LOGIN_USER, REGISTER_USER } from "../constants/actionTypes"
 
-export const registerNewUser = (userData) => async (dispatch) => {
+export const registerNewUser = (userData, setIsSignup, setPassword) => async (dispatch) => {
   try {
-    await api.registerNewUser(userData).catch((error) => {
+    await api.registerNewUser(userData).then(() =>{
+      setIsSignup(false)
+      setPassword("")
+    }).catch((error) => {
       console.log(error.response)
       dispatch({ type: REGISTER_USER, errorResponse: error.response })
     })
