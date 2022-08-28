@@ -2,6 +2,7 @@ import React from 'react'
 import ChatHeader from "./ChatHeader"
 import ChatMessages from "./ChatMessages"
 import SendMessages from "./SendMessages"
+import "./chatContent.css";
 
 const ChatContent = () => {
   return (
