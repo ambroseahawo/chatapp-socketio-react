@@ -1,5 +1,5 @@
 import React from 'react'
-import ChatList from "../chats/ChatList"
+import ChatsList from "../chats/ChatsList"
 import ChatContent from "../chatContent/ChatContent"
 import Profile from "../profile/Profile"
 import "./messenger.css"
@@ -7,7 +7,7 @@ import "./messenger.css"
 const Messenger = () => {
   return (
     <div className="main__chatbody">
-      <ChatList />
+      <ChatsList />
       <ChatContent />
       <Profile />
     </div>
