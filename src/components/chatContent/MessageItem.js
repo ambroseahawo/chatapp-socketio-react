@@ -9,7 +9,7 @@ const ChatItem = (props) => {
         <div className="chat__meta">
           <span style={{ textTransform: "capitalize" }}>{props.sender}</span>
         </div>
-        <div className="chat__msg">{props.msg}</div>
+        <div className="chat__msg">{props.text}</div>
       </div>
     </div>
   );

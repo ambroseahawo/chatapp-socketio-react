@@ -13,7 +13,7 @@ const ChatMessages = () => {
               key={index}
               sender={itm.sender}
               user={itm.sender}
-              msg={itm.msg}
+              text={itm.text}
               image={itm.image}
             />
           );
