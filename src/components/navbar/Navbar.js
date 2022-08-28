@@ -8,8 +8,7 @@ const Navbar = () =>{
       <Link className='navbar-logo' to='/'>SocketIo</Link>
         <ul className="nav-menu">
           <li className="nav-item">
-            <Link to="/messenger" className='nav-links'>Messages</Link>
-            <Link to="/profile" className='nav-links'>Profile</Link>
+            <Link to="/messages" className='nav-links'>Messages</Link>
             <button className='nav-links nav-btn'>Logout</button>
           </li>
         </ul>
