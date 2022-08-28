@@ -9,13 +9,14 @@ const ChatMessages = () => {
       <div className="chat__items">
         {messages && messages.map((itm, index) => {
           return (
-            <MessageItem
-              key={index}
-              sender={itm.sender}
-              user={itm.sender}
-              text={itm.text}
-              image={itm.image}
-            />
+            <React.Fragment key={index}>
+              <MessageItem
+                sender={itm.sender}
+                user={itm.sender}
+                text={itm.text}
+                image={itm.image}
+              />
+            </React.Fragment>
           );
         })}
       </div>
