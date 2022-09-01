@@ -1,15 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
 import { useCookies } from "react-cookie";
+import { getExistingChats } from "../../global/actions/chats";
 import ChatListItem from "./ChatListItem";
 import "./chats.css";
 
 const ChatList = () => {
-  const [chats, setChats] = useState([])
+  const chats = useSelector((state) => state.getChatsReducer.chats)
+  const dispatch = useDispatch()
+  console.log(chats)
   const [cookies] = useCookies(["authenticatedUser"])
 
   useEffect(() => {
     const currentAuthenticatedUserId = cookies.authenticatedUser?._id
-  })
+    dispatch(getExistingChats(currentAuthenticatedUserId))
+  }, [cookies.authenticatedUser?._id])
 
   return (
     <div className="main__chatlist">
