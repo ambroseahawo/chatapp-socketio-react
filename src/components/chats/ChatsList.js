@@ -1,9 +1,15 @@
-import React from "react";
-import { allChatUsers } from "./ChatUsers";
-import "./chats.css";
+import React, { useEffect, useRef, useState } from "react";
+import { useCookies } from "react-cookie";
 import ChatListItem from "./ChatListItem";
+import "./chats.css";
 
 const ChatList = () => {
+  const [chats, setChats] = useState([])
+  const [cookies] = useCookies(["authenticatedUser"])
+
+  useEffect(() => {
+    const currentAuthenticatedUserId = cookies.authenticatedUser?._id
+  })
 
   return (
     <div className="main__chatlist">
@@ -14,7 +20,7 @@ const ChatList = () => {
         </button>
       </div>
       <div className="chatlist__items">
-        {allChatUsers.map((item, index) => {
+        {chats && chats.map((item, index) => {
           return (
             <ChatListItem
               name={item.name}

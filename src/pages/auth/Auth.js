@@ -40,7 +40,7 @@ const Auth = () => {
         setCookie("authenticatedUser", authState.authData)
         if(cookies.authenticatedUser?.username){
           console.log(cookies.authenticatedUser?.username)
-          navigate("/messenger")
+          navigate("/messages")
         }
       }
     }
