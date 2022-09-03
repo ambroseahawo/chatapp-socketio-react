@@ -2,19 +2,36 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { useCookies } from "react-cookie";
 import { getExistingChats } from "../../global/actions/chats";
+import { getExistingUser } from "../../global/actions/users";
 import ChatListItem from "./ChatListItem";
 import "./chats.css";
 
 const ChatList = () => {
+  const [cookies] = useCookies(["authenticatedUser"])
+  const currentAuthenticatedUserId = cookies.authenticatedUser?._id
+  console.log("CURRENT ID: ", currentAuthenticatedUserId)
   const chats = useSelector((state) => state.getChatsReducer.chats)
   const dispatch = useDispatch()
-  console.log(chats)
-  const [cookies] = useCookies(["authenticatedUser"])
+
+  const [chatUsers, setChatUsers] = useState(null)
+
+  const getChatFriends = (chatArray) =>{
+    chatArray?.forEach(chat => {
+      const friendId = chat.members.find((m) => m !== currentAuthenticatedUserId)
+      console.log(friendId);
+      // dispatch(getExistingUser(friendId, setChatUsers))
+      // chat.members.forEach(userId =>{
+      //   const friendId = conversation.members.find((m) => m !== currentUser._id)
+      //   dispatch(getExistingUser(userId, setChatUsers))
+      // })
+    });
+  }
 
   useEffect(() => {
-    const currentAuthenticatedUserId = cookies.authenticatedUser?._id
     dispatch(getExistingChats(currentAuthenticatedUserId))
-  }, [cookies.authenticatedUser?._id])
+    console.log("ALL CHATS: ", chats)
+    getChatFriends(chats)
+  }, [cookies.authenticatedUser?._id, dispatch])
 
   return (
     <div className="main__chatlist">
@@ -25,16 +42,17 @@ const ChatList = () => {
         </button>
       </div>
       <div className="chatlist__items">
-        {chats && chats.map((item, index) => {
+        {chatUsers && chatUsers.map((item, index) => {
           return (
-            <ChatListItem
-              name={item.name}
-              key={item.id}
-              animationDelay={index + 1}
-              active={item.active ? "active" : ""}
-              isOnline={item.isOnline ? "active" : ""}
-              image={item.image}
-            />
+            <React.Fragment key={index}>
+              <ChatListItem
+                name={item.name}
+                animationDelay={index + 1}
+                active={item.active ? "active" : ""}
+                isOnline={item.isOnline ? "active" : ""}
+                image={item.image}
+              />
+            </React.Fragment>
           );
         })}
       </div>

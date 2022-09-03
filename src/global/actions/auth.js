@@ -18,7 +18,6 @@ export const registerNewUser = (userData, setIsSignup, setPassword) => async (di
 export const loginExistingUser = (userData) => async(dispatch) =>{
   try{
     await api.loginExistingUser(userData).then((resp) =>{
-      console.log("Login data: ", resp.data)
       dispatch({ type: LOGIN_USER, payload: resp.data, errorResponse: null})
     }).catch((error) => {
       console.log(error);

@@ -39,7 +39,6 @@ const Auth = () => {
       if(!isSignup){
         setCookie("authenticatedUser", authState.authData)
         if(cookies.authenticatedUser?.username){
-          console.log(cookies.authenticatedUser?.username)
           navigate("/messages")
         }
       }
@@ -81,7 +80,7 @@ const Auth = () => {
         setErrorMessage("Passwords did not match")
         return
       }
-      console.log({ email: email, username: username, password: password, confirmPassword: confirmPassword })
+      // console.log({ email: email, username: username, password: password, confirmPassword: confirmPassword })
 
       const userData = {
         email: email,
@@ -91,7 +90,7 @@ const Auth = () => {
 
       dispatch(registerNewUser(userData, setIsSignup, setPassword))
     } else {
-      console.log({ username: username, password: password });
+      // console.log({ username: username, password: password });
       const userData = {
         username: username,
         password: password
