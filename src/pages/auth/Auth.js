@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { useCookies } from "react-cookie"
 import { loginExistingUser, registerNewUser } from '../../global/actions/auth';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -29,7 +28,6 @@ const Auth = () => {
   const [errorMessage, setErrorMessage] = useState('')
   
   const authState = useSelector((state) => state.authReducer)
-  const [cookies, setCookie] = useCookies(["authenticatedUser"])
 
   useEffect(() => {
     if (authState?.errorResponse) {
@@ -37,13 +35,20 @@ const Auth = () => {
       setErrorMessage(authState.errorResponse.data)
     }else{
       if(!isSignup){
-        setCookie("authenticatedUser", authState.authData)
-        if(cookies.authenticatedUser?.username){
+        const currentUser = JSON.parse(localStorage.getItem('authenticatedUser'))
+        if (!currentUser?._id){
+          if (authState.authData){
+            localStorage.setItem('authenticatedUser', JSON.stringify(authState.authData))
+            navigate("/messages")
+          }else{
+            navigate("/")
+          }
+        }else{
           navigate("/messages")
         }
       }
     }
-  }, [authState, cookies.authenticatedUser?.username, isSignup, navigate, setCookie])
+  }, [authState, isSignup, navigate])
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
