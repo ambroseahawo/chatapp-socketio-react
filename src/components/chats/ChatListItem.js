@@ -29,7 +29,7 @@ const ChatListItem = (props) => {
 
       <div className="userMeta">
         <p>{props.name}</p>
-        <span className="activeTime">Group</span>
+        {/* <span className="activeTime">Group</span> */}
       </div>
     </div>
   );
