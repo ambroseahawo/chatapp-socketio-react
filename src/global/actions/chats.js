@@ -1,5 +1,5 @@
 import * as api from "../../utils/api/APIService"
-import { GET_CHATS } from "../constants/actionTypes"
+import { GET_CHATS, SET_CURRENT_CHAT } from "../constants/actionTypes"
 
 export const getExistingChats = (userId) => async (dispatch) => {
   try {
@@ -9,5 +9,14 @@ export const getExistingChats = (userId) => async (dispatch) => {
     })
   } catch (error) {
     console.log(error.message)
+  }
+}
+
+export const switchCurrentChat = (chat) => async (dispatch) => {
+  try {
+    console.log("CURRENT CHAT", chat)
+    dispatch({ type: SET_CURRENT_CHAT, payload: chat })
+  } catch (error) {
+    console.log(error.message);
   }
 }

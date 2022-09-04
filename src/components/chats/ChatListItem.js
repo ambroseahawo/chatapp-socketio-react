@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios'
+import { useDispatch } from "react-redux"
 import Avatar from "../avatar/Avatar";
 
-const ChatListItem = (props) => {
+const ChatListItem = ({ chat, currentUserId }) => {
+  const dispatch = useDispatch()
+  const [chatUser, setChatUser] = useState([])
+
+  useEffect(() => {
+    // get friend data
+    const friendId = chat.members.find((m) => m !== currentUserId)
+    const getUser = async () => {
+      try {
+        const res = await axios(`${process.env.REACT_APP_BASE_URL}/users?userId=${friendId}`)
+        setChatUser(res.data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getUser()
+  }, [chat.members, currentUserId, dispatch])
+
   const selectChat = (e) => {
     for (
       let index = 0;
@@ -14,21 +33,14 @@ const ChatListItem = (props) => {
   };
 
   return (
-    <div
-      style={{ animationDelay: `0.${props.animationDelay}s` }}
-      onClick={selectChat}
-      className={`chatlist__item ${props.active ? props.active : ""
-        } `}
-    >
+    <div className={`chatlist__item ${chatUser?.active ? chatUser.active : ""}`}>
       <Avatar
-        image={
-          props.image ? props.image : "http://placehold.it/80x80"
-        }
-        isOnline={props.isOnline}
-      />
-
+        image={chatUser?.profilePicture
+          ? chatUser.profilePicture
+          : "https://i.pravatar.cc/150?img=33"}
+        isOnline={chatUser?.isOnline} />
       <div className="userMeta">
-        <p>{props.name}</p>
+        <p>{chatUser?.username}</p>
         {/* <span className="activeTime">Group</span> */}
       </div>
     </div>

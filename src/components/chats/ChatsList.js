@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getExistingChats } from "../../global/actions/chats";
+import { getExistingChats, switchCurrentChat } from "../../global/actions/chats";
 import ChatListItem from "./ChatListItem";
 import "./chats.css";
 
 const ChatList = () => {
   const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
-  const chatUsers = useSelector((state) => state.getChatsReducer.chats)
+  const chats = useSelector((state) => state.getChatsReducer.chats)
   const dispatch = useDispatch()
+
+  // const [currentChat, setCurrentChat] = useState('')
+  const handleSwitchChat = (chat) => {
+    dispatch(switchCurrentChat(chat))
+  }
 
   useEffect(() => {
     dispatch(getExistingChats(currentAuthenticatedUser._id))
@@ -22,17 +27,11 @@ const ChatList = () => {
         </button>
       </div>
       <div className="chatlist__items">
-        {chatUsers && chatUsers.map((item, index) => {
+        {chats && chats.map((item, index) => {
           return (
-            <React.Fragment key={index}>
-              <ChatListItem
-                name={item.username}
-                animationDelay={index + 1}
-                active={item.active ? "active" : ""}
-                isOnline={item.isOnline ? "active" : ""}
-                image={item.profilePicture}
-              />
-            </React.Fragment>
+            <div key={index} onClick={() => handleSwitchChat(item)} >
+              <ChatListItem chat={item} currentUserId={currentAuthenticatedUser._id}/>
+            </div>
           );
         })}
       </div>
