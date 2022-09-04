@@ -15,6 +15,7 @@
 .current-chatting-user p {
   margin: 0;
   font-weight: 600;
+  text-transform: capitalize;
 }
 .content__header {
   display: flex;
