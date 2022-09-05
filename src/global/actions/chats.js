@@ -12,11 +12,11 @@ export const getExistingChats = (userId) => async (dispatch) => {
   }
 }
 
-export const getCurrentChat = (userId) => async (dispatch) => {
+export const getCurrentChat = (userId, setChatUser) => async (dispatch) => {
   try {
     await api.getCurrentChat(userId).then((res) => {
       console.log("CURRENT CHAT: ", res.data);
-      dispatch({ type: GET_CURRENT_CHAT, payload: res.data })
+      setChatUser(res.data)
     })
   } catch (error) {
     console.log(error.message)

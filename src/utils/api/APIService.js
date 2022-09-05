@@ -8,7 +8,7 @@ const registerUserUrl = `${apiBaseUrl}/auth/register`
 const loginExistingUserUrl = `${apiBaseUrl}/auth/login`
 const chatsUrl = `${apiBaseUrl}/chats`
 const usersUrl = `${apiBaseUrl}/users`
-const currentChatUrl = `${apiBaseUrl}/current`
+const currentChatUrl = `${apiBaseUrl}/chats/current`
 
 // register user
 export const registerNewUser = (userData) => axios.post(registerUserUrl, userData)
