@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getMessages } from '../../global/actions/messages'
 import MessageItem from "./MessageItem"
 
-const ChatMessages = () => {
-  const currentChatState = useSelector((state) => state.getChatsReducer.currentChatFriend)
-  const [currentChatId, setCurrentChatId] = useState(currentChatState?.currentChatId)
+const ChatMessages = ({ chatUser }) => {
+  const dispatch = useDispatch()
+  const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
   const [messages, setMessages] = useState([])
+
+  useEffect(() => {
+    console.log("CHAT USER: ", chatUser);
+    if (Object.keys(chatUser).length !== 0) dispatch(getMessages(currentAuthenticatedUser._id, chatUser?.currentChatId))
+  }, [chatUser, currentAuthenticatedUser._id, dispatch])
 
   return (
     <div className="content__body">

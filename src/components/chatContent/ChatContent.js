@@ -19,7 +19,7 @@ const ChatContent = () => {
   return (
     <div className="main__chatcontent">
       <ChatHeader chatUser={chatUser} setChatUser={setChatUser} />
-      <ChatMessages />
+      <ChatMessages chatUser={chatUser} />
       <SendMessages />
     </div>
   )
