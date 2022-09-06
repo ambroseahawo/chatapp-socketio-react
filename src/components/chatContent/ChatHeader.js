@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
-import { useDispatch, useSelector } from "react-redux"
-import { getCurrentChatFriend } from '../../global/actions/chats'
+import { useSelector } from "react-redux"
 import Avatar from "../avatar/Avatar"
 import noProfilePicture from "../../assets/images/noAvatar.png"
 
-const ChatHeader = () => {
+const ChatHeader = ({ chatUser, setChatUser }) => {
   const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
-  const dispatch = useDispatch()
   const currentChat = useSelector((state) => state.getChatsReducer.currentChat)
-
-  const [chatUser, setChatUser] = useState({})
-
-  useEffect(() => {
-    dispatch(getCurrentChatFriend(currentAuthenticatedUser._id, setChatUser))
-  }, [currentAuthenticatedUser._id, dispatch])
 
   useEffect(() => {
     const getUser = async () => {
@@ -27,8 +19,8 @@ const ChatHeader = () => {
       }
     }
 
-    if(currentChat)getUser()
-  }, [currentAuthenticatedUser._id, currentChat, currentChat?.members])
+    if (currentChat) getUser()
+  }, [currentAuthenticatedUser._id, currentChat, currentChat?.members, setChatUser])
 
   return (
     <div className="content__header">
@@ -38,7 +30,7 @@ const ChatHeader = () => {
             image={chatUser?.profilePicture ?
               chatUser?.profilePicture :
               noProfilePicture}
-            />
+          />
           <p>{chatUser?.username}</p>
         </div>
       </div>

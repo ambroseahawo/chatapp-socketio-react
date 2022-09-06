@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import MessageItem from "./MessageItem"
 
 const ChatMessages = () => {
-  const messages = [{ sender: "me", user: "name", text: "default", image: "http://placehold.it/80x80"}]
+  const currentChatState = useSelector((state) => state.getChatsReducer.currentChatFriend)
+  const [currentChatId, setCurrentChatId] = useState(currentChatState?.currentChatId)
+  const [messages, setMessages] = useState([])
 
   return (
     <div className="content__body">
