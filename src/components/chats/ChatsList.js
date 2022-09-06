@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getExistingChats, switchCurrentChat } from "../../global/actions/chats";
+import { getExistingChats, putCurrentChat, switchCurrentChat } from "../../global/actions/chats";
 import ChatListItem from "./ChatListItem";
 import "./chats.css";
 
@@ -12,6 +12,7 @@ const ChatList = () => {
   // const [currentChat, setCurrentChat] = useState('')
   const handleSwitchChat = (chat) => {
     dispatch(switchCurrentChat(chat))
+    dispatch(putCurrentChat({ userId: currentAuthenticatedUser._id, chatId: chat._id }))
   }
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const ChatList = () => {
         {chats && chats.map((item, index) => {
           return (
             <div key={index} onClick={() => handleSwitchChat(item)} >
-              <ChatListItem chat={item} currentUserId={currentAuthenticatedUser._id}/>
+              <ChatListItem chat={item} currentUserId={currentAuthenticatedUser._id} />
             </div>
           );
         })}

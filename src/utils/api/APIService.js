@@ -20,3 +20,5 @@ export const getExistingChats = (userId) => axios.get(`${chatsUrl}/${userId}`)
 export const getExistingUser = (userId) => axios.get(`${usersUrl}?userId=${userId}`)
 // get current chat
 export const getCurrentChat = (userId) => axios.get(`${currentChatUrl}/${userId}`)
+// update current chat
+export const putCurrentChat = ({ userId, chatId }) => axios.put(currentChatUrl, { userId, chatId })
