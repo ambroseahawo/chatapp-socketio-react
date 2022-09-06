@@ -13,7 +13,8 @@ const ChatHeader = ({ chatUser, setChatUser }) => {
       const friendId = currentChat?.members.find((id) => id !== currentAuthenticatedUser._id)
       try {
         const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/users?userId=${friendId}`)
-        setChatUser(data)
+        const chatUserData = { ...data, currentChatId: currentChat?._id }
+        setChatUser(chatUserData)
       } catch (error) {
         console.log(error.message)
       }
