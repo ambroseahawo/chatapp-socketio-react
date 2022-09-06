@@ -6,22 +6,24 @@ import MessageItem from "./MessageItem"
 const ChatMessages = ({ chatUser }) => {
   const dispatch = useDispatch()
   const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
-  const [messages, setMessages] = useState([])
+  const messages = useSelector((state) => state.getMessagesReducer.messages)
 
   useEffect(() => {
     console.log("CHAT USER: ", chatUser);
-    if (Object.keys(chatUser).length !== 0) dispatch(getMessages(currentAuthenticatedUser._id, chatUser?.currentChatId))
+    if (Object.keys(chatUser).length !== 0) {
+      dispatch(getMessages(currentAuthenticatedUser._id, chatUser?.currentChatId))
+    }
   }, [chatUser, currentAuthenticatedUser._id, dispatch])
 
   return (
     <div className="content__body">
       <div className="chat__items">
-        {messages && messages.map((itm, index) => {
+        {messages && messages.map((itm) => {
           return (
-            <React.Fragment key={index}>
+            <React.Fragment key={itm._id}>
               <MessageItem
                 sender={itm.sender}
-                user={itm.sender}
+                user={itm.senderId === currentAuthenticatedUser._id ? "me" : "other"}
                 text={itm.text}
                 image={itm.image}
               />
