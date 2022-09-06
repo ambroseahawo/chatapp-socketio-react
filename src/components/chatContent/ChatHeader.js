@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from "react-redux"
-import { getCurrentChat } from '../../global/actions/chats'
+import { getCurrentChatFriend } from '../../global/actions/chats'
 import Avatar from "../avatar/Avatar"
 import noProfilePicture from "../../assets/images/noAvatar.png"
 
@@ -13,7 +13,7 @@ const ChatHeader = () => {
   const [chatUser, setChatUser] = useState({})
 
   useEffect(() => {
-    dispatch(getCurrentChat(currentAuthenticatedUser._id, setChatUser))
+    dispatch(getCurrentChatFriend(currentAuthenticatedUser._id, setChatUser))
   }, [currentAuthenticatedUser._id, dispatch])
 
   useEffect(() => {

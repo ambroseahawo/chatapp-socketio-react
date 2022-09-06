@@ -12,7 +12,7 @@ export const getExistingChats = (userId) => async (dispatch) => {
   }
 }
 
-export const getCurrentChat = (userId, setChatUser) => async (dispatch) => {
+export const getCurrentChatFriend = (userId, setChatUser) => async (dispatch) => {
   try {
     await api.getCurrentChat(userId).then((res) => {
       console.log("CURRENT CHAT: ", res.data);
