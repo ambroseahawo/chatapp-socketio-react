@@ -1,10 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { io } from "socket.io-client"
+import { useDispatch, useSelector } from 'react-redux'
 
 const SendMessages = () => {
-  const [message, setMessage] = useState("")
+  const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
+  const currentChat = useSelector((state) => state.getChatsReducer.currentChat)
+
+  const [messages, setMessages] = useState(useSelector((state) => state.getMessagesReducer.messages))
+  const [newMessage, setNewMessage] = useState("")
+  const [arrivalMessage, setArrivalMessage] = useState("")
+  const [onlineUsers, setOnlineUsers] = useState("")
+
+  const socket = useRef()
+  const scrollRef = useRef()
+
+  useEffect(() =>{
+    socket.current = io(`${process.env.REACT_APP_WEB_SOCKET}`)
+    socket.current.on("getMessage", data =>{
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now()
+      })
+    })
+  }, [])
+  
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prevMessages) => [...prevMessages, arrivalMessage])
+  }, [arrivalMessage, currentChat?.members])
+
+  useEffect(() => {
+    socket.current.emit("addUser", currentAuthenticatedUser._id)
+    socket.current.on("getUsers", users => {
+      setOnlineUsers(currentAuthenticatedUser.followings?.filter((f) => users.some((u) => u.userId === f)))
+    })
+  }, [currentAuthenticatedUser._id, currentAuthenticatedUser.followings])
 
   const handleClick = () =>{
-    console.log({text: message});
+    console.log({ text: newMessage });
   }
 
   return (
@@ -16,8 +51,8 @@ const SendMessages = () => {
         <input
           type="text"
           placeholder="Type a message here"
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
+          onChange={(e) => setNewMessage(e.target.value)}
+          value={newMessage}
         />
         <button className="btnSendMsg" id="sendMsgBtn" onClick={handleClick}>
           <i className="fa fa-paper-plane"></i>
