@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMessages } from '../../global/actions/messages'
 import MessageItem from "./MessageItem"
 
-const ChatMessages = ({ chatUser }) => {
+const ChatMessages = ({ chatUser, scrollRef }) => {
   const dispatch = useDispatch()
   const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
   const messages = useSelector((state) => state.getMessagesReducer.messages)
@@ -20,7 +20,7 @@ const ChatMessages = ({ chatUser }) => {
       <div className="chat__items">
         {messages && messages.map((itm) => {
           return (
-            <React.Fragment key={itm._id}>
+            <React.Fragment key={itm._id} ref={scrollRef}>
               <MessageItem
                 sender={itm.sender}
                 user={itm.senderId === currentAuthenticatedUser._id ? "me" : "other"}

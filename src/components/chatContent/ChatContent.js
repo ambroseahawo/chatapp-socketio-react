@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { getCurrentChatFriend } from '../../global/actions/chats'
 import ChatHeader from "./ChatHeader"
@@ -9,6 +9,7 @@ import "./chatContent.css";
 const ChatContent = () => {
   const dispatch = useDispatch()
   const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
+  const scrollRef = useRef()
 
   const [chatUser, setChatUser] = useState({})
 
@@ -19,8 +20,8 @@ const ChatContent = () => {
   return (
     <div className="main__chatcontent">
       <ChatHeader chatUser={chatUser} setChatUser={setChatUser} />
-      <ChatMessages chatUser={chatUser} />
-      <SendMessages />
+      <ChatMessages chatUser={chatUser} scrollRef={scrollRef} />
+      <SendMessages scrollRef={scrollRef} />
     </div>
   )
 }

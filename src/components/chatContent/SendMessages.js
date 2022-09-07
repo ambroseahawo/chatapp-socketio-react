@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { io } from "socket.io-client"
 import { useDispatch, useSelector } from 'react-redux'
 
-const SendMessages = () => {
+const SendMessages = ({ scrollRef }) => {
   const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
   const currentChat = useSelector((state) => state.getChatsReducer.currentChat)
 
@@ -12,11 +12,10 @@ const SendMessages = () => {
   const [onlineUsers, setOnlineUsers] = useState("")
 
   const socket = useRef()
-  const scrollRef = useRef()
 
-  useEffect(() =>{
+  useEffect(() => {
     socket.current = io(`${process.env.REACT_APP_WEB_SOCKET}`)
-    socket.current.on("getMessage", data =>{
+    socket.current.on("getMessage", data => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
@@ -24,7 +23,7 @@ const SendMessages = () => {
       })
     })
   }, [])
-  
+
   useEffect(() => {
     arrivalMessage &&
       currentChat?.members.includes(arrivalMessage.sender) &&
@@ -38,9 +37,26 @@ const SendMessages = () => {
     })
   }, [currentAuthenticatedUser._id, currentAuthenticatedUser.followings])
 
-  const handleClick = () =>{
+  const handleClick = () => {
     console.log({ text: newMessage });
+    const newMessageObj = {
+      sender: currentAuthenticatedUser._id,
+      text: newMessage,
+      conversationId: currentChat._id
+    }
+
+    const receiverId = currentChat.members.find(member => member !== currentAuthenticatedUser._id)
+
+    socket.current.emit("sendMessage", {
+      senderId: currentAuthenticatedUser._id,
+      receiverId,
+      text: newMessage
+    })
   }
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages, scrollRef])
 
   return (
     <div className="content__footer">
