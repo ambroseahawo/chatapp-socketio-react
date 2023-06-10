@@ -25,3 +25,5 @@ export const getCurrentChat = (userId) => axios.get(`${currentChatUrl}/${userId}
 export const putCurrentChat = ({ userId, chatId }) => axios.put(currentChatUrl, { userId, chatId })
 // get all messages in a chat
 export const getMessages = (userId, chatId) => axios.get(`${messagesUrl}/${userId}/${chatId}`)
+// post message
+export const postMessage = (newMessageData) => axios.post(messagesUrl, newMessageData)

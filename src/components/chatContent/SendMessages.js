@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { io } from "socket.io-client"
 import { useDispatch, useSelector } from 'react-redux'
+import { postMessage } from '../../global/actions/messages'
 
 const SendMessages = ({ scrollRef }) => {
   const currentAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'))
   const currentChat = useSelector((state) => state.getChatsReducer.currentChat)
+  const currentChatFriend = useSelector((state) => state.getChatsReducer.currentChatFriend)
+  const dispatch = useDispatch()
 
+  console.log("CURRENT CHAT: ", currentChat);
+  console.log("CURRENT CHAT FRIEND: ", currentChatFriend);
   const [messages, setMessages] = useState(useSelector((state) => state.getMessagesReducer.messages))
   const [newMessage, setNewMessage] = useState("")
   const [arrivalMessage, setArrivalMessage] = useState("")
@@ -42,7 +47,7 @@ const SendMessages = ({ scrollRef }) => {
     const newMessageObj = {
       sender: currentAuthenticatedUser._id,
       text: newMessage,
-      conversationId: currentChat._id
+      conversationId: currentChatFriend.currentChatId
     }
 
     const receiverId = currentChat.members.find(member => member !== currentAuthenticatedUser._id)
@@ -52,6 +57,8 @@ const SendMessages = ({ scrollRef }) => {
       receiverId,
       text: newMessage
     })
+
+    dispatch(postMessage(newMessageObj))
   }
 
   useEffect(() => {

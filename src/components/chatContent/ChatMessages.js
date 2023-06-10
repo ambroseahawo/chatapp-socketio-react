@@ -20,7 +20,7 @@ const ChatMessages = ({ chatUser, scrollRef }) => {
       <div className="chat__items">
         {messages && messages.map((itm) => {
           return (
-            <React.Fragment key={itm._id} ref={scrollRef}>
+            <React.Fragment key={itm._id}>
               <MessageItem
                 sender={itm.sender}
                 user={itm.senderId === currentAuthenticatedUser._id ? "me" : "other"}
@@ -30,6 +30,7 @@ const ChatMessages = ({ chatUser, scrollRef }) => {
             </React.Fragment>
           );
         })}
+        <div ref={scrollRef}></div>
       </div>
     </div>
   )

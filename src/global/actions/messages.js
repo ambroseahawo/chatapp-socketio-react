@@ -11,3 +11,13 @@ export const getMessages = (userId, chatId) => async (dispatch) => {
     console.log(error.message);
   }
 }
+
+export const postMessage = (newMessageData) => async (dispatch) => {
+  try {
+    await api.postMessage(newMessageData).then((res) => {
+      console.log(res.data)
+    })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
